@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Port number to expose the Node.js app outside Docker
-EXPOSE 5000
+EXPOSE 5001
 
 # Command to run the application
 CMD ["node", "index.js"]

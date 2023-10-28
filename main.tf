@@ -1,20 +1,7 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "4.45.0"
-    }
-  }
-}
-
-provider "aws" {
-  region  = "us-east-1" # The region where environment is going to be deployed # Use your own region here
-  access_key = "enter_access_key_here" # Enter AWS IAM 
-  secret_key = "enter_secret_key_here" # Enter AWS IAM 
-}
 
 
-resource "aws_ecr_repository" "app_ecr_repo" {
+
+resource "aws_ecr_repository" "demo_ecr_repo" {
   name = "app-repo"
 }
 
@@ -28,12 +15,12 @@ resource "aws_ecs_task_definition" "app_task" {
   [
     {
       "name": "app-first-task",
-      "image": "${aws_ecr_repository.app_ecr_repo.repository_url}",
+      "image": "${aws_ecr_repository.demo_ecr_repo.repository_url}",
       "essential": true,
       "portMappings": [
         {
-          "containerPort": 5000,
-          "hostPort": 5000
+          "containerPort": 5001,
+          "hostPort": 5001
         }
       ],
       "memory": 512,
@@ -141,7 +128,7 @@ resource "aws_ecs_service" "app_service" {
   load_balancer {
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # Reference the target group
     container_name   = "${aws_ecs_task_definition.app_task.family}"
-    container_port   = 5000 # Specify the container port
+    container_port   = 5001 # Specify the container port
   }
 
   network_configuration {

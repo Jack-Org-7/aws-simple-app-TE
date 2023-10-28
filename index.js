@@ -32,14 +32,14 @@ const sql_create_speakers_tbl = `CREATE TABLE IF NOT EXISTS Speakers (
       if(err){
           return console.error(err.message)
       }
-      console.log("successful creation of speakers table")
+      console.log("successful creation of mountain table")
   });
 
   /* Seeding speakers table */
   const sql_insert = `INSERT INTO Speakers (id, name, title, about, workplace) VALUES
-  (1, 'John Kennedy', 'Web development', 'John is a web developer at microsoft for 12 years', 'Microsoft'),
-  (2, 'Johnstone Colombus', 'Environment Conservation', 'John has been a UN advocate for the past 6  years', 'United Nations'),
-  (3, 'Kirk Byers', 'Health and Exrecise', 'Kirk is a professional football player', 'FC Football');`;
+  (1, 'Jay Peak', 'Really far North', 'If you have been to Jay Peak, you know our reputation is deserved—the most snow in eastern North America and a liberal in-bounds policy that ensures you can enjoy it.', '1957'),
+  (2, 'Smugglers Notch', 'Cambridge, VT', 'Smugglers Notch is a mountain pass in Lamoille County, Vermont. The notch separates Mount Mansfield, the highest peak of the Green Mountains, from Spruce Peak and the Sterling Range.', '1956'),
+  (3, 'Stowe', 'Stowe, VT', 'Nestled at the base of Vermonts highest peak sits one of the most fabled ski resorts in the East. A picture-perfect destination with a longstanding heritage of being at the forefront of the premium Vermont mountain experience. Its all here waiting for you.', '1937');`;
   db.run(sql_insert, err => {
     if (err) {
       return console.error(err.message);
@@ -50,8 +50,8 @@ const sql_create_speakers_tbl = `CREATE TABLE IF NOT EXISTS Speakers (
 
 
 /* Port listening */
-app.listen(5000, ()=> {
-    console.log("server started at port 5000")
+app.listen(5001, ()=> {
+    console.log("server started at port 5001")
 })
 
 
