@@ -1,5 +1,6 @@
-
-
+provider "aws" {
+  region = var.region
+}
 
 resource "aws_ecr_repository" "demo_ecr_repo" {
   name = "app-repo"
