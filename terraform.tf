@@ -1,15 +1,17 @@
 terraform {
     cloud {
-    organization = "ACME_DEMO_01"
+      organization = "ACME_DEMO_01"
 
-    workspaces {
-      name = "aws-simple-app-TE"
-    }
+      workspaces {
+        name = "aws-simple-app-TE"
+      }
   }
     required_providers {
-    aws = {
-        source = "hashicorp/aws"
-        version = "4.45.0"
+      aws = {
+          source = "hashicorp/aws"
+          version = "~> 3.28.0"
+      }
     }
-    }
+    required_version = ">= 1.1.0"
+
 }
