@@ -3,19 +3,19 @@ provider "aws" {
 }
 
 resource "aws_ecr_repository" "demo_ecr_repo" {
-  name = "app-repo"
+  name = "demo-repo"
 }
 
-resource "aws_ecs_cluster" "my_cluster" {
-  name = "app-cluster" # Name your cluster here
+resource "aws_ecs_cluster" "mountain_cluster" {
+  name = "mountain-app-cluster" 
 }
 
 resource "aws_ecs_task_definition" "app_task" {
-  family                   = "app-first-task" # Name your task
+  family                   = "mtn-demo-task" 
   container_definitions    = <<DEFINITION
   [
     {
-      "name": "app-first-task",
+      "name": "mtn-demo-task",
       "image": "${aws_ecr_repository.demo_ecr_repo.repository_url}",
       "essential": true,
       "portMappings": [
@@ -106,36 +106,36 @@ resource "aws_lb_target_group" "target_group" {
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = "${aws_default_vpc.default_vpc.id}" # Referencing the default VPC
+  vpc_id      = "${aws_default_vpc.default_vpc.id}"
 }
 
 resource "aws_lb_listener" "listener" {
-  load_balancer_arn = "${aws_alb.application_load_balancer.arn}" # Referencing our load balancer
+  load_balancer_arn = "${aws_alb.application_load_balancer.arn}"
   port              = "80"
   protocol          = "HTTP"
   default_action {
     type             = "forward"
-    target_group_arn = "${aws_lb_target_group.target_group.arn}" # Referencing our tagrte group
+    target_group_arn = "${aws_lb_target_group.target_group.arn}" 
   }
 }
 
 resource "aws_ecs_service" "app_service" {
-  name            = "app-first-service"                             # Name the  service
-  cluster         = "${aws_ecs_cluster.my_cluster.id}"             # Reference the created Cluster
-  task_definition = "${aws_ecs_task_definition.app_task.arn}" # Reference the task that the service will spin up
+  name            = "mtn-demo-service"                            
+  cluster         = "${aws_ecs_cluster.mountain_cluster.id}"            
+  task_definition = "${aws_ecs_task_definition.app_task.arn}" 
   launch_type     = "FARGATE"
-  desired_count   = 3 # Set up the number of containers to 3
+  desired_count   = 3 
 
   load_balancer {
-    target_group_arn = "${aws_lb_target_group.target_group.arn}" # Reference the target group
+    target_group_arn = "${aws_lb_target_group.target_group.arn}" 
     container_name   = "${aws_ecs_task_definition.app_task.family}"
-    container_port   = 5001 # Specify the container port
+    container_port   = 5001 
   }
 
   network_configuration {
     subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}"]
-    assign_public_ip = true                                                # Provide the containers with public IPs
-    security_groups  = ["${aws_security_group.service_security_group.id}"] # Set up the security group
+    assign_public_ip = true                                               
+    security_groups  = ["${aws_security_group.service_security_group.id}"] 
   }
 }
 
@@ -144,7 +144,6 @@ resource "aws_security_group" "service_security_group" {
     from_port = 0
     to_port   = 0
     protocol  = "-1"
-    # Only allowing traffic in from the load balancer security group
     security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
   }
 
