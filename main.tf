@@ -3,11 +3,11 @@ provider "aws" {
 }
 
 resource "aws_ecr_repository" "demo_ecr_repo" {
-  name = "demo-repo"
+  name = "acme-demo-repo"
 }
 
-resource "aws_ecs_cluster" "mountain_cluster" {
-  name = "mountain-app-cluster" 
+resource "aws_ecs_cluster" "app_cluster" {
+  name = "mtn-app-cluster" 
 }
 
 resource "aws_ecs_task_definition" "app_task" {
@@ -121,7 +121,8 @@ resource "aws_lb_listener" "listener" {
 
 resource "aws_ecs_service" "app_service" {
   name            = "mtn-demo-service"                            
-  cluster         = "${aws_ecs_cluster.mountain_cluster.id}"            
+  cluster         = "${aws_ecs_cluster.app_cluster
+.id}"            
   task_definition = "${aws_ecs_task_definition.app_task.arn}" 
   launch_type     = "FARGATE"
   desired_count   = 3 
