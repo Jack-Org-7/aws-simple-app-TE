@@ -11,11 +11,11 @@ resource "aws_ecs_cluster" "app_cluster" {
 }
 
 resource "aws_ecs_task_definition" "app_task" {
-  family                   = "mtn-demo-task" 
+  family                   = "mtn-demo-task-01" 
   container_definitions    = <<DEFINITION
   [
     {
-      "name": "mtn-demo-task",
+      "name": "mtn-demo-task-01",
       "image": "${aws_ecr_repository.demo_ecr_repo.repository_url}",
       "essential": true,
       "portMappings": [
