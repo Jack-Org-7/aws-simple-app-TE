@@ -11,7 +11,7 @@ resource "aws_ecs_cluster" "app_cluster" {
 }
 
 resource "aws_ecs_task_definition" "app_task" {
-  family                   = "mtn-demo-task-01" 
+  family                   = "mtn-demo-task" 
   container_definitions    = <<DEFINITION
   [
     {
